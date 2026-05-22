@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chinese Business Club — Le 1er Club d'affaires de France</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0b1f3a;
+    --navy-deep:#06142a;
+    --navy-soft:#15315b;
+    --red:#c8102e;
+    --red-deep:#9a0a23;
+    --gold:#c8a96a;
+    --cream:#f6f1e7;
+    --paper:#fbf8f1;
+    --ink:#0a0a0f;
+    --muted:#5a6478;
+    --line: color-mix(in oklch, var(--navy) 14%, transparent);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--paper);
+    color:var(--navy);
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .serif{font-family:'Cormorant Garamond',serif;}
+  .container{max-width:1280px;margin:0 auto;padding:0 32px}
+  @media (max-width:640px){.container{padding:0 20px}}
+
+  /* ============= LOADING ============= */
+  .preloader{
+    position:fixed;inset:0;background:var(--navy);z-index:9999;
+    display:flex;align-items:center;justify-content:center;
+    transition:opacity .8s ease, visibility .8s ease;
+  }
+  .preloader.hidden{opacity:0;visibility:hidden}
+  .pre-logo{
+    width:120px;height:120px;
+    animation:preSpin 1.4s cubic-bezier(.7,0,.3,1) infinite alternate;
+  }
+  .pre-logo path,.pre-logo polygon{fill:var(--red)}
+  @keyframes preSpin{
+    from{transform:scale(.94) rotate(-6deg);opacity:.7}
+    to{transform:scale(1) rotate(6deg);opacity:1}
+  }
+
+  /* ============= TOP BAR ============= */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    transition:all .4s ease;
+    padding:18px 0;
+    background:transparent;
+  }
+  .topbar.scrolled{
+    background:rgba(11,31,58,.94);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;gap:32px;
+  }
+  .brand{display:flex;align-items:center;gap:14px;cursor:pointer}
+  .brand-logo{
+    width:54px;height:54px;
+    background:#fff;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 24px rgba(200,16,46,.35);
+    transition:transform .5s cubic-bezier(.7,0,.3,1);
+    overflow:hidden;
+    padding:6px;
+  }
+  .brand:hover .brand-logo{transform:rotate(360deg)}
+  .brand-logo img{width:100%;height:100%;object-fit:contain;display:block}
+  .brand-text{display:flex;flex-direction:column;line-height:1.1}
+  .brand-name{
+    font-family:'Cormorant Garamond',serif;
+    font-size:20px;font-weight:600;color:#fff;
+    letter-spacing:.5px;
+  }
+  .brand-tag{font-size:10px;letter-spacing:2.5px;color:var(--gold);text-transform:uppercase;font-weight:500}
+  .topbar:not(.scrolled) .brand-name{color:#fff}
+  .topbar:not(.scrolled) .brand-tag{color:var(--gold)}
+
+  .nav-links{display:flex;align-items:center;gap:6px;list-style:none}
+  .nav-links a{
+    color:#fff;text-decoration:none;
+    font-size:13px;font-weight:500;
+    padding:10px 18px;border-radius:999px;
+    transition:all .3s ease;
+    letter-spacing:.4px;
+    position:relative;
+  }
+  .nav-links a:hover{background:rgba(255,255,255,.08)}
+  .nav-links a.active{background:var(--red);color:#fff}
+  .nav-links a.active:hover{background:var(--red-deep)}
+
+  .lang{
+    display:flex;align-items:center;
+    background:rgba(255,255,255,.08);
+    border-radius:999px;padding:3px;
+    border:1px solid rgba(255,255,255,.1);
+  }
+  .lang button{
+    background:transparent;border:none;
+    color:rgba(255,255,255,.6);
+    padding:5px 12px;font-size:11px;font-weight:600;
+    letter-spacing:1px;cursor:pointer;border-radius:999px;
+    transition:all .25s;text-transform:uppercase;
+    font-family:inherit;
+  }
+  .lang button.on{background:#fff;color:var(--navy)}
+
+  .menu-btn{display:none;background:transparent;border:none;cursor:pointer;width:30px;height:24px;position:relative}
+  .menu-btn span{position:absolute;left:0;right:0;height:2px;background:#fff;transition:.3s}
+  .menu-btn span:nth-child(1){top:3px}
+  .menu-btn span:nth-child(2){top:11px}
+  .menu-btn span:nth-child(3){top:19px}
+
+  @media (max-width:920px){
+    .nav-links{
+      position:fixed;top:0;right:-100%;
+      flex-direction:column;align-items:flex-start;
+      width:80%;max-width:340px;height:100vh;
+      background:var(--navy-deep);
+      padding:100px 32px 32px;gap:8px;
+      transition:right .5s cubic-bezier(.7,0,.3,1);
+      box-shadow:-20px 0 60px rgba(0,0,0,.4);
+    }
+    .nav-links.open{right:0}
+    .nav-links a{width:100%;font-size:16px;padding:14px 20px}
+    .menu-btn{display:block;z-index:101}
+  }
+
+  /* ============= HERO ============= */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    background:var(--navy-deep);
+    color:#fff;
+    overflow:hidden;
+    display:flex;align-items:center;
+  }
+  .hero-bg{
+    position:absolute;inset:0;
+    background-image:url('assets/photos/grand-salon.jpg');
+    background-size:cover;background-position:center;
+    filter:brightness(.75) saturate(1);
+    transform:scale(1.1);
+    animation:slowZoom 22s ease-in-out infinite alternate;
+  }
+  @keyframes slowZoom{
+    from{transform:scale(1.05)}
+    to{transform:scale(1.15)}
+  }
+  .hero-overlay{
+    position:absolute;inset:0;
+    background:
+      linear-gradient(100deg, rgba(6,20,42,.85) 0%, rgba(6,20,42,.55) 45%, rgba(6,20,42,.15) 75%, rgba(6,20,42,.45) 100%),
+      linear-gradient(180deg, rgba(6,20,42,.3) 0%, rgba(6,20,42,.6) 100%);
+  }
+  .hero-noise{
+    position:absolute;inset:0;opacity:.04;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .hero-content{
+    position:relative;z-index:2;
+    width:100%;padding:140px 0 100px;
+  }
+  .hero-eyebrow{
+    display:inline-flex;align-items:center;gap:14px;
+    margin-bottom:32px;
+    padding:8px 18px;
+    background:rgba(200,16,46,.15);
+    border:1px solid rgba(200,16,46,.4);
+    border-radius:999px;
+    font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:600;color:#fff;
+    opacity:0;transform:translateY(20px);
+    animation:rise .9s .3s forwards cubic-bezier(.2,.7,.2,1);
+  }
+  .hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 2s infinite}
+  @keyframes pulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(200,16,46,.7)}
+    50%{box-shadow:0 0 0 8px rgba(200,16,46,0)}
+  }
+
+  .hero h1{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(48px, 8vw, 110px);
+    font-weight:500;
+    line-height:.98;
+    letter-spacing:-1.5px;
+    margin-bottom:32px;
+    max-width:1100px;
+  }
+  .hero h1 .line{
+    display:block;overflow:hidden;
+  }
+  .hero h1 .line span{
+    display:inline-block;
+    opacity:0;transform:translateY(110%);
+    animation:revealUp 1.1s forwards cubic-bezier(.2,.7,.2,1);
+  }
+  .hero h1 .line:nth-child(1) span{animation-delay:.45s}
+  .hero h1 .line:nth-child(2) span{animation-delay:.6s}
+  .hero h1 .line:nth-child(3) span{animation-delay:.75s}
+  @keyframes revealUp{to{opacity:1;transform:translateY(0)}}
+  .hero h1 em{
+    font-style:italic;
+    color:var(--red);
+    position:relative;
+  }
+  .hero h1 em::after{
+    content:'';position:absolute;left:0;right:0;bottom:.08em;height:.06em;
+    background:var(--gold);
+    transform:scaleX(0);transform-origin:left;
+    animation:underline 1.4s 1.5s forwards cubic-bezier(.7,0,.3,1);
+  }
+  @keyframes underline{to{transform:scaleX(1)}}
+
+  .hero-sub{
+    font-size:18px;font-weight:300;
+    max-width:620px;
+    color:rgba(255,255,255,.78);
+    margin-bottom:48px;
+    opacity:0;transform:translateY(20px);
+    animation:rise 1s 1s forwards cubic-bezier(.2,.7,.2,1);
+  }
+  @keyframes rise{to{opacity:1;transform:translateY(0)}}
+
+  .hero-cta{
+    display:flex;flex-wrap:wrap;gap:16px;
+    opacity:0;transform:translateY(20px);
+    animation:rise 1s 1.2s forwards cubic-bezier(.2,.7,.2,1);
+  }
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:16px 32px;
+    border-radius:999px;
+    font-size:14px;font-weight:600;letter-spacing:.5px;
+    text-decoration:none;cursor:pointer;border:none;
+    transition:all .35s cubic-bezier(.2,.7,.2,1);
+    font-family:inherit;
+    position:relative;overflow:hidden;
+  }
+  .btn-primary{background:var(--red);color:#fff}
+  .btn-primary:hover{background:var(--red-deep);transform:translateY(-2px);box-shadow:0 12px 32px rgba(200,16,46,.4)}
+  .btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3)}
+  .btn-ghost:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.6)}
+  .btn .arr{transition:transform .3s}
+  .btn:hover .arr{transform:translateX(4px)}
+
+  .hero-scroll{
+    position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+    z-index:3;
+    display:flex;flex-direction:column;align-items:center;gap:12px;
+    color:rgba(255,255,255,.5);
+    font-size:10px;letter-spacing:3px;text-transform:uppercase;
+    opacity:0;animation:rise 1s 1.6s forwards;
+  }
+  .scroll-line{width:1px;height:50px;background:linear-gradient(180deg,rgba(255,255,255,.5),transparent);position:relative;overflow:hidden}
+  .scroll-line::after{
+    content:'';position:absolute;top:-50%;left:0;width:100%;height:50%;
+    background:rgba(255,255,255,.9);
+    animation:scrollDown 2.4s ease-in-out infinite;
+  }
+  @keyframes scrollDown{
+    0%{top:-50%}
+    100%{top:100%}
+  }
+
+  /* corner decorative element */
+  .hero-stars{
+    position:absolute;top:50%;right:6%;transform:translateY(-50%);
+    z-index:1;width:340px;height:340px;
+    opacity:.14;pointer-events:none;
+  }
+  .hero-stars svg{width:100%;height:100%;animation:slowRotate 60s linear infinite}
+  @keyframes slowRotate{to{transform:rotate(360deg)}}
+  @media (max-width:920px){.hero-stars{display:none}}
+
+  /* ============= TICKER ============= */
+  .ticker{
+    background:var(--red);
+    color:#fff;
+    padding:18px 0;
+    overflow:hidden;
+    white-space:nowrap;
+    position:relative;
+    border-top:1px solid rgba(255,255,255,.1);
+    border-bottom:1px solid rgba(0,0,0,.1);
+  }
+  .ticker-track{
+    display:inline-flex;gap:48px;
+    animation:tickerScroll 40s linear infinite;
+    padding-left:48px;
+  }
+  .ticker-item{
+    font-family:'Cormorant Garamond',serif;
+    font-size:24px;font-style:italic;
+    display:inline-flex;align-items:center;gap:48px;
+  }
+  .ticker-item::after{
+    content:'★';color:var(--gold);font-style:normal;font-size:18px;
+  }
+  @keyframes tickerScroll{
+    to{transform:translateX(-50%)}
+  }
+
+  /* ============= STATS ============= */
+  .stats{
+    background:var(--paper);
+    padding:100px 0 60px;
+    position:relative;
+  }
+  .stats-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .stat{
+    padding:48px 32px;
+    text-align:center;
+    border-right:1px solid var(--line);
+    position:relative;
+  }
+  .stat:last-child{border-right:none}
+  .stat-num{
+    font-family:'Cormorant Garamond',serif;
+    font-size:72px;font-weight:500;
+    color:var(--red);
+    line-height:1;
+    display:flex;align-items:baseline;justify-content:center;gap:4px;
+  }
+  .stat-suffix{font-size:32px;color:var(--navy)}
+  .stat-label{
+    margin-top:12px;
+    font-size:11px;text-transform:uppercase;letter-spacing:2.5px;
+    color:var(--muted);font-weight:600;
+  }
+  @media (max-width:820px){
+    .stats-grid{grid-template-columns:repeat(2,1fr)}
+    .stat:nth-child(2){border-right:none}
+    .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}
+  }
+
+  /* ============= SECTION HEADER ============= */
+  section{padding:120px 0;position:relative}
+  .sec-head{display:flex;flex-direction:column;align-items:flex-start;margin-bottom:64px;max-width:760px}
+  .sec-eyebrow{
+    display:inline-flex;align-items:center;gap:14px;
+    font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:600;
+    color:var(--red);margin-bottom:24px;
+  }
+  .sec-eyebrow::before{
+    content:'';width:32px;height:1px;background:var(--red);
+  }
+  .sec-title{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(36px,5vw,64px);
+    font-weight:500;line-height:1.05;letter-spacing:-1px;
+    color:var(--navy);
+  }
+  .sec-title em{font-style:italic;color:var(--red)}
+  .sec-sub{
+    margin-top:20px;font-size:17px;color:var(--muted);max-width:600px;
+    font-weight:300;
+  }
+
+  /* ============= ABOUT ============= */
+  .about{background:var(--paper)}
+  .about-grid{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:80px;align-items:center;
+  }
+  @media (max-width:920px){.about-grid{grid-template-columns:1fr;gap:48px}}
+  .about-text p{
+    font-size:16px;color:var(--navy);margin-bottom:18px;
+    line-height:1.75;
+  }
+  .about-text p strong{color:var(--red);font-weight:600}
+  .pull-quote{
+    border-left:3px solid var(--red);
+    padding:20px 0 20px 28px;
+    margin:36px 0;
+    font-family:'Cormorant Garamond',serif;
+    font-size:24px;font-style:italic;
+    color:var(--navy);
+    line-height:1.4;
+  }
+  .pull-quote::before{content:'« ';color:var(--red)}
+  .pull-quote::after{content:' »';color:var(--red)}
+
+  .keywords{
+    display:flex;flex-wrap:wrap;gap:10px;margin-top:32px;
+  }
+  .kw{
+    padding:10px 20px;border:1px solid var(--navy);
+    border-radius:999px;font-size:13px;font-weight:500;
+    letter-spacing:1px;text-transform:uppercase;
+    transition:all .3s;cursor:default;
+  }
+  .kw:hover{background:var(--navy);color:#fff}
+  .kw.red{background:var(--red);color:#fff;border-color:var(--red)}
+  .kw.red:hover{background:var(--red-deep);border-color:var(--red-deep)}
+
+  .president-card{
+    position:relative;
+    border-radius:8px;overflow:hidden;
+    box-shadow:0 30px 80px rgba(11,31,58,.18);
+    transform:rotate(-1deg);
+    transition:transform .6s cubic-bezier(.2,.7,.2,1);
+  }
+  .president-card:hover{transform:rotate(0deg) scale(1.02)}
+  .president-card img{
+    width:100%;height:600px;object-fit:cover;display:block;
+    transition:transform .8s ease;
+  }
+  .president-card:hover img{transform:scale(1.04)}
+  .president-tag{
+    position:absolute;left:24px;bottom:24px;right:24px;
+    color:#fff;
+    background:linear-gradient(180deg,transparent,rgba(6,20,42,.92));
+    padding:80px 24px 24px;margin:-80px -24px -24px;
+  }
+  .president-name{
+    font-family:'Cormorant Garamond',serif;
+    font-size:28px;font-weight:500;line-height:1;
+  }
+  .president-role{
+    margin-top:8px;font-size:11px;letter-spacing:3px;
+    text-transform:uppercase;color:var(--gold);font-weight:600;
+  }
+  .president-deco{
+    position:absolute;top:-30px;left:-30px;
+    background:#fff;
+    width:140px;height:140px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    padding:14px;
+    box-shadow:0 20px 50px rgba(200,16,46,.4);
+    z-index:2;
+    animation:slowRotate 30s linear infinite;
+  }
+
+  /* ============= SECTORS ============= */
+  .sectors{background:var(--navy);color:#fff;overflow:hidden}
+  .sectors .sec-title{color:#fff}
+  .sectors .sec-sub{color:rgba(255,255,255,.65)}
+  .sectors .sec-eyebrow{color:var(--gold)}
+  .sectors .sec-eyebrow::before{background:var(--gold)}
+
+  .sectors-marquee{
+    position:relative;margin-top:40px;
+    -webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+    mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+  }
+  .marq-row{
+    display:flex;gap:24px;width:max-content;
+    animation:marqLeft 80s linear infinite;
+    padding:12px 0;
+  }
+  .marq-row.rev{animation:marqRight 90s linear infinite;margin-top:24px}
+  @keyframes marqLeft{to{transform:translateX(-50%)}}
+  @keyframes marqRight{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+  .marq-card{
+    flex:0 0 auto;
+    padding:28px 36px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:999px;
+    font-family:'Cormorant Garamond',serif;
+    font-size:22px;font-style:italic;
+    color:#fff;
+    transition:all .3s;
+    cursor:default;
+  }
+  .marq-card:hover{
+    background:var(--red);border-color:var(--red);
+    transform:translateY(-2px);
+  }
+
+  /* ============= EVENTS / TIMELINE ============= */
+  .events{background:var(--paper)}
+  .timeline{
+    margin-top:40px;
+    display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  }
+  @media (max-width:920px){.timeline{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.timeline{grid-template-columns:1fr}}
+  .tl-item{
+    padding:32px 28px 32px 0;
+    border-left:1px solid var(--line);
+    padding-left:28px;
+    position:relative;
+    transition:transform .4s;
+  }
+  .tl-item:hover{transform:translateY(-4px)}
+  .tl-item::before{
+    content:'';position:absolute;left:-5px;top:32px;
+    width:9px;height:9px;background:var(--red);border-radius:50%;
+    box-shadow:0 0 0 4px var(--paper);
+  }
+  .tl-month{
+    font-size:11px;letter-spacing:2.5px;text-transform:uppercase;
+    color:var(--red);font-weight:600;
+  }
+  .tl-title{
+    margin-top:10px;
+    font-family:'Cormorant Garamond',serif;
+    font-size:22px;line-height:1.2;
+    color:var(--navy);
+    font-weight:500;
+  }
+  .tl-place{margin-top:8px;font-size:13px;color:var(--muted)}
+
+  /* ============= GALLERY ============= */
+  .gallery{background:var(--paper)}
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(12,1fr);
+    grid-auto-rows:120px;
+    gap:14px;
+  }
+  .g-item{
+    overflow:hidden;border-radius:6px;position:relative;
+    cursor:pointer;background:var(--navy);
+  }
+  .g-item img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform 1s cubic-bezier(.2,.7,.2,1);
+  }
+  .g-item:hover img{transform:scale(1.08)}
+  .g-item::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg,transparent 50%,rgba(6,20,42,.7));
+    opacity:0;transition:opacity .4s;
+  }
+  .g-item:hover::after{opacity:1}
+  .g-caption{
+    position:absolute;left:20px;bottom:20px;right:20px;
+    color:#fff;opacity:0;transform:translateY(10px);
+    transition:all .4s;z-index:2;
+    font-family:'Cormorant Garamond',serif;
+    font-size:20px;
+  }
+  .g-item:hover .g-caption{opacity:1;transform:translateY(0)}
+
+  .g1{grid-column:span 7;grid-row:span 3}
+  .g2{grid-column:span 5;grid-row:span 2}
+  .g3{grid-column:span 5;grid-row:span 2}
+  .g4{grid-column:span 4;grid-row:span 2}
+  .g5{grid-column:span 4;grid-row:span 2}
+  .g6{grid-column:span 4;grid-row:span 2}
+  @media (max-width:820px){
+    .gallery-grid{grid-template-columns:repeat(2,1fr)}
+    .g1,.g2,.g3,.g4,.g5,.g6{grid-column:span 1;grid-row:span 2}
+  }
+
+  /* Video card */
+  .video-card{
+    margin-top:48px;
+    position:relative;
+    border-radius:8px;overflow:hidden;
+    aspect-ratio:21/9;
+    background:var(--navy);
+    cursor:pointer;
+  }
+  .video-card img{
+    width:100%;height:100%;object-fit:cover;
+    transition:transform 1.2s ease;
+    filter:brightness(.7);
+  }
+  .video-card:hover img{transform:scale(1.05)}
+  .video-play{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;
+  }
+  .play-btn{
+    width:96px;height:96px;border-radius:50%;
+    background:var(--red);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 20px 60px rgba(200,16,46,.5);
+    position:relative;
+  }
+  .play-btn::before{
+    content:'';position:absolute;inset:-8px;border-radius:50%;
+    border:2px solid rgba(255,255,255,.4);
+    animation:ripple 2.4s ease-out infinite;
+  }
+  @keyframes ripple{
+    0%{transform:scale(1);opacity:1}
+    100%{transform:scale(1.6);opacity:0}
+  }
+  .play-btn svg{width:32px;height:32px;fill:#fff;margin-left:5px}
+  .video-info{
+    position:absolute;left:32px;bottom:32px;right:32px;color:#fff;z-index:2;
+  }
+  .video-info .meta{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .video-info h3{
+    font-family:'Cormorant Garamond',serif;
+    font-size:32px;font-weight:500;margin-top:8px;
+  }
+
+  /* ============= MEMBERS ============= */
+  .members{
+    background:linear-gradient(180deg, var(--paper) 0%, var(--cream) 100%);
+  }
+  .members-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+  }
+  @media (max-width:920px){.members-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.members-grid{grid-template-columns:1fr}}
+  .mem-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:32px 24px;
+    transition:all .5s cubic-bezier(.2,.7,.2,1);
+    cursor:default;position:relative;overflow:hidden;
+  }
+  .mem-card::before{
+    content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:var(--red);transform:scaleY(0);transform-origin:bottom;
+    transition:transform .4s ease;
+  }
+  .mem-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 30px 60px rgba(11,31,58,.12);
+  }
+  .mem-card:hover::before{transform:scaleY(1);transform-origin:top}
+  .mem-photo{
+    width:80px;height:80px;border-radius:50%;
+    margin-bottom:20px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;
+    color:#fff;background:var(--navy);
+    border:2px solid var(--paper);
+    box-shadow:0 8px 20px rgba(11,31,58,.2);
+  }
+  .mem-card:nth-child(2n) .mem-photo{background:var(--red)}
+  .mem-card:nth-child(3n) .mem-photo{background:var(--navy-soft)}
+  .mem-name{
+    font-family:'Cormorant Garamond',serif;
+    font-size:22px;font-weight:600;color:var(--navy);
+    line-height:1.2;
+  }
+  .mem-role{font-size:13px;color:var(--muted);margin-top:4px}
+  .mem-sector{
+    margin-top:16px;display:inline-block;
+    font-size:10px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--red);font-weight:700;
+    padding:4px 10px;background:rgba(200,16,46,.08);
+    border-radius:4px;
+  }
+  .mem-bio{
+    margin-top:16px;font-size:13px;color:var(--muted);line-height:1.6;
+  }
+
+  /* ============= CONTACT ============= */
+  .contact{background:var(--navy);color:#fff;position:relative;overflow:hidden}
+  .contact::before{
+    content:'';position:absolute;inset:0;
+    background-image:url('assets/photos/sponsor-three.jpg');
+    background-size:cover;background-position:center;
+    opacity:.08;
+    filter:saturate(.6);
+    pointer-events:none;
+  }
+  .contact::after{
+    content:'';position:absolute;bottom:-150px;left:-150px;
+    width:500px;height:500px;border-radius:50%;
+    background:radial-gradient(circle, rgba(200,169,106,.1), transparent 70%);
+    pointer-events:none;
+  }
+  .contact .sec-title{color:#fff}
+  .contact .sec-eyebrow{color:var(--gold)}
+  .contact .sec-eyebrow::before{background:var(--gold)}
+  .contact-grid{
+    display:grid;grid-template-columns:1fr 1.2fr;gap:80px;
+    position:relative;z-index:1;
+  }
+  @media (max-width:920px){.contact-grid{grid-template-columns:1fr;gap:48px}}
+
+  .contact-info{display:flex;flex-direction:column;gap:32px}
+  .ci-row{display:flex;gap:18px;align-items:flex-start}
+  .ci-ico{
+    width:42px;height:42px;flex-shrink:0;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--red);
+  }
+  .ci-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:4px}
+  .ci-value{font-size:17px;color:rgba(255,255,255,.92);font-weight:300;line-height:1.4}
+  .ci-value strong{font-weight:600}
+
+  .contact-form{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;
+    padding:40px;
+    backdrop-filter:blur(20px);
+  }
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  @media (max-width:540px){.form-row{grid-template-columns:1fr}}
+  .field{position:relative}
+  .field input,.field textarea,.field select{
+    width:100%;
+    background:transparent;
+    border:none;border-bottom:1px solid rgba(255,255,255,.2);
+    padding:18px 0 8px;
+    color:#fff;
+    font-family:inherit;font-size:15px;
+    transition:border-color .3s;
+    border-radius:0;
+  }
+  .field input:focus,.field textarea:focus,.field select:focus{
+    outline:none;border-bottom-color:var(--red);
+  }
+  .field label{
+    position:absolute;left:0;top:18px;pointer-events:none;
+    color:rgba(255,255,255,.5);font-size:15px;
+    transition:all .3s;
+  }
+  .field input:focus + label,
+  .field input:not(:placeholder-shown) + label,
+  .field textarea:focus + label,
+  .field textarea:not(:placeholder-shown) + label,
+  .field select:valid + label{
+    top:0;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+  }
+  .field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='white' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+  .field select option{background:var(--navy);color:#fff}
+  .field textarea{resize:vertical;min-height:90px;font-family:inherit}
+  .form-submit{
+    margin-top:24px;width:100%;
+    background:var(--red);color:#fff;
+    padding:18px;
+    border:none;border-radius:999px;
+    font-family:inherit;font-size:14px;font-weight:600;
+    letter-spacing:1.5px;text-transform:uppercase;
+    cursor:pointer;transition:all .3s;
+  }
+  .form-submit:hover{background:var(--red-deep);transform:translateY(-2px);box-shadow:0 12px 32px rgba(200,16,46,.4)}
+
+  /* ============= FOOTER ============= */
+  footer{
+    background:var(--navy-deep);color:rgba(255,255,255,.7);
+    padding:80px 0 30px;
+    border-top:1px solid rgba(255,255,255,.06);
+  }
+  .foot-grid{
+    display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;
+    margin-bottom:48px;
+  }
+  @media (max-width:820px){.foot-grid{grid-template-columns:1fr 1fr;gap:32px}}
+  @media (max-width:520px){.foot-grid{grid-template-columns:1fr}}
+  .foot-col h4{
+    font-family:'Cormorant Garamond',serif;
+    font-size:18px;color:#fff;margin-bottom:20px;font-weight:500;
+  }
+  .foot-col p{font-size:14px;line-height:1.7;color:rgba(255,255,255,.5)}
+  .foot-col ul{list-style:none}
+  .foot-col li{margin-bottom:10px}
+  .foot-col a{color:rgba(255,255,255,.6);text-decoration:none;font-size:14px;transition:color .3s}
+  .foot-col a:hover{color:var(--red)}
+  .foot-brand{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+  .foot-brand .brand-logo{width:42px;height:42px}
+  .foot-brand .brand-logo svg{width:26px;height:26px}
+  .foot-bottom{
+    padding-top:32px;border-top:1px solid rgba(255,255,255,.08);
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+    font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.5px;
+  }
+  .foot-bottom .links{display:flex;gap:24px}
+  .foot-bottom a{color:rgba(255,255,255,.4);text-decoration:none}
+  .foot-bottom a:hover{color:#fff}
+
+  /* ============= ACCESSIBILITY BUTTON ============= */
+  .a11y-btn{
+    position:fixed;bottom:24px;left:24px;
+    width:54px;height:54px;border-radius:50%;
+    background:var(--navy);
+    color:#fff;border:none;cursor:pointer;
+    box-shadow:0 12px 32px rgba(11,31,58,.4);
+    display:flex;align-items:center;justify-content:center;
+    z-index:50;transition:transform .3s;
+  }
+  .a11y-btn:hover{transform:scale(1.08) rotate(8deg)}
+  .a11y-btn svg{width:26px;height:26px;fill:#fff}
+
+  /* ============= GUESTS ============= */
+  .guests{
+    background:var(--paper);
+    position:relative;
+  }
+  .guest-grid{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    grid-auto-rows:200px;
+    gap:14px;
+  }
+  .guest-card{
+    position:relative;
+    overflow:hidden;
+    border-radius:8px;
+    background:var(--navy);
+    grid-column:span 2;
+    grid-row:span 2;
+    cursor:pointer;
+    transition:transform .5s cubic-bezier(.2,.7,.2,1);
+  }
+  .guest-card.guest-tall{grid-row:span 3}
+  .guest-card.guest-wide{grid-column:span 4;grid-row:span 2}
+  .guest-card img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform 1s cubic-bezier(.2,.7,.2,1), filter .6s;
+    filter:saturate(.92);
+  }
+  .guest-card:hover img{transform:scale(1.05);filter:saturate(1.1)}
+  .guest-card figcaption{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:60px 22px 22px;
+    background:linear-gradient(180deg,transparent 0%, rgba(6,20,42,.95) 80%);
+    color:#fff;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .g-tag{
+    align-self:flex-start;
+    padding:4px 12px;border-radius:999px;
+    background:var(--red);
+    font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;
+  }
+  .g-title{
+    font-family:'Cormorant Garamond',serif;
+    font-size:20px;line-height:1.2;font-weight:500;
+  }
+  @media (max-width:920px){
+    .guest-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:240px}
+    .guest-card,.guest-card.guest-tall,.guest-card.guest-wide{grid-column:span 1;grid-row:span 1}
+  }
+
+  /* ============= SCROLL REVEALS ============= */
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:translateY(0)}
+  .reveal.delay-1{transition-delay:.1s}
+  .reveal.delay-2{transition-delay:.2s}
+  .reveal.delay-3{transition-delay:.3s}
+  .reveal.delay-4{transition-delay:.4s}
+
+  /* fade for translation swap */
+  [data-fr],[data-en]{transition:opacity .2s}
+  body.lang-swapping [data-fr],body.lang-swapping [data-en]{opacity:0}
+</style>
+</head>
+<body class="lang-fr">
+
+<!-- ============= PRELOADER ============= -->
+<div class="preloader" id="preloader">
+  <svg class="pre-logo" viewBox="0 0 1050.17 1050.21">
+    <polygon points="141.34 338.67 125.79 386.34 75.65 386.29 116.18 415.81 100.63 463.48 141.23 434.05 181.76 463.57 166.32 415.86 206.92 386.44 156.78 386.38 141.34 338.67"></polygon>
+    <polygon points="913.92 338.67 929.47 386.34 979.61 386.29 939.07 415.81 954.62 463.48 914.02 434.05 873.49 463.57 888.93 415.86 848.33 386.44 898.48 386.38 913.92 338.67"></polygon>
+    <circle cx="525" cy="525" r="450" fill="none" stroke="#c8102e" stroke-width="40"/>
+  </svg>
+</div>
+
+<!-- ============= TOPBAR ============= -->
+<header class="topbar" id="topbar">
+  <div class="container nav">
+    <a href="#accueil" class="brand">
+      <div class="brand-logo">
+        <img src="assets/logo.svg" alt="Chinese Business Club">
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">Chinese Business Club</div>
+        <div class="brand-tag">Depuis 2012 · Paris</div>
+      </div>
+    </a>
+
+    <ul class="nav-links" id="navlinks">
+      <li><a href="#accueil" class="nav-a active" data-fr="Accueil" data-en="Home">Accueil</a></li>
+      <li><a href="#galerie" class="nav-a" data-fr="Photos &amp; Vidéos" data-en="Photos &amp; Videos">Photos &amp; Vidéos</a></li>
+      <li><a href="#membres" class="nav-a" data-fr="Nos Membres" data-en="Our Members">Nos Membres</a></li>
+      <li><a href="#contact" class="nav-a" data-fr="Nous Contacter" data-en="Contact">Nous Contacter</a></li>
+    </ul>
+
+    <div class="lang">
+      <button class="on" data-lang="fr">FR</button>
+      <button data-lang="en">EN</button>
+    </div>
+
+    <button class="menu-btn" id="menubtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============= HERO ============= -->
+<section id="accueil" class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-noise"></div>
+
+  <div class="hero-stars" aria-hidden="true">
+    <svg viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="98" fill="none" stroke="#fff" stroke-width=".5"/>
+      <circle cx="100" cy="100" r="76" fill="none" stroke="#fff" stroke-width=".5"/>
+      <polygon points="100 70 105 90 125 90 109 102 115 122 100 110 85 122 91 102 75 90 95 90" fill="#c8a96a"/>
+    </svg>
+  </div>
+
+  <div class="container hero-content">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      <span data-fr="Élu meilleur réseau d'affaires de France" data-en="Voted best business network in France">Élu meilleur réseau d'affaires de France</span>
+    </div>
+
+    <h1>
+      <span class="line"><span data-fr="Le 1<sup>er</sup> Club" data-en="The N°1 Club">Le 1<sup>er</sup> Club</span></span>
+      <span class="line"><span data-fr="d'affaires" data-en="of business">d'affaires</span></span>
+      <span class="line"><span data-fr="de <em>France</em>" data-en="in <em>France</em>">de <em>France</em></span></span>
+    </h1>
+
+    <p class="hero-sub" data-fr="Entrepreneurs, chefs d'entreprise, dirigeants : développez votre carnet d'adresses au sein d'un cercle prestigieux. Plus de 140 sociétés membres, 15 événements par an à Paris." data-en="Entrepreneurs, business leaders, executives: grow your network within a prestigious circle. Over 140 member companies and 15 events per year in Paris.">
+      Entrepreneurs, chefs d'entreprise, dirigeants : développez votre carnet d'adresses au sein d'un cercle prestigieux. Plus de 140 sociétés membres, 15 événements par an à Paris.
+    </p>
+
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary">
+        <span data-fr="Adhérer au Club" data-en="Join the Club">Adhérer au Club</span>
+        <span class="arr">→</span>
+      </a>
+      <a href="#galerie" class="btn btn-ghost">
+        <span data-fr="Découvrir" data-en="Discover">Découvrir</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span data-fr="Faites défiler" data-en="Scroll">Faites défiler</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ============= TICKER ============= -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item">International</span>
+    <span class="ticker-item">Business</span>
+    <span class="ticker-item">Networking</span>
+    <span class="ticker-item">Excellence</span>
+    <span class="ticker-item">Influence</span>
+    <span class="ticker-item">Prestige</span>
+    <span class="ticker-item">International</span>
+    <span class="ticker-item">Business</span>
+    <span class="ticker-item">Networking</span>
+    <span class="ticker-item">Excellence</span>
+    <span class="ticker-item">Influence</span>
+    <span class="ticker-item">Prestige</span>
+  </div>
+</div>
+
+<!-- ============= STATS ============= -->
+<div class="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat reveal">
+        <div class="stat-num"><span class="count" data-target="140">0</span><span class="stat-suffix">+</span></div>
+        <div class="stat-label" data-fr="Sociétés membres" data-en="Member companies">Sociétés membres</div>
+      </div>
+      <div class="stat reveal delay-1">
+        <div class="stat-num"><span class="count" data-target="15">0</span></div>
+        <div class="stat-label" data-fr="Événements / an" data-en="Events / year">Événements / an</div>
+      </div>
+      <div class="stat reveal delay-2">
+        <div class="stat-num"><span class="count" data-target="90">0</span><span class="stat-suffix">%</span></div>
+        <div class="stat-label" data-fr="Taux de fidélité" data-en="Renewal rate">Taux de fidélité</div>
+      </div>
+      <div class="stat reveal delay-3">
+        <div class="stat-num"><span class="count" data-target="2012">0</span></div>
+        <div class="stat-label" data-fr="Année de fondation" data-en="Founded">Année de fondation</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============= ABOUT ============= -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="sec-eyebrow" data-fr="Notre Cercle" data-en="Our Circle">Notre Cercle</div>
+        <h2 class="sec-title">
+          <span data-fr="Le carnet d'adresses<br><em>clé en main</em>" data-en="The turnkey<br><em>address book</em>">Le carnet d'adresses<br><em>clé en main</em></span>
+        </h2>
+
+        <p style="margin-top:32px" data-fr="Désormais <strong>franco-français à 90%</strong>, le Chinese Business Club est le carnet d'adresses à disposition des entrepreneurs, start-up, TPE, PME &amp; ETI pour rayonner partout en France et à l'international." data-en="Now <strong>90% French-French</strong>, the Chinese Business Club is the address book available to entrepreneurs, start-ups, SMEs and mid-sized companies to shine across France and internationally.">
+          Désormais <strong>franco-français à 90%</strong>, le Chinese Business Club est le carnet d'adresses à disposition des entrepreneurs, start-up, TPE, PME &amp; ETI pour rayonner partout en France et à l'international.
+        </p>
+
+        <p data-fr="Tous les mois : mises en relation, cocktails et déjeuners d'affaires avec des invités d'honneur prestigieux — entrepreneurs de licornes françaises, personnalités politiques, dirigeants du CAC40." data-en="Every month: introductions, cocktails and business lunches with prestigious guests of honor — founders of French unicorns, political figures, CAC40 executives.">
+          Tous les mois : mises en relation, cocktails et déjeuners d'affaires avec des invités d'honneur prestigieux — entrepreneurs de licornes françaises, personnalités politiques, dirigeants du CAC40.
+        </p>
+
+        <div class="pull-quote" data-fr="International, Business et Networking à haut niveau." data-en="International, Business and Networking at the highest level.">
+          International, Business et Networking à haut niveau.
+        </div>
+
+        <div class="keywords">
+          <span class="kw red">International</span>
+          <span class="kw red">Business</span>
+          <span class="kw red">Networking</span>
+        </div>
+      </div>
+
+      <div class="reveal delay-2">
+        <div class="president-card">
+          <div class="president-deco"><img src="assets/logo.svg" alt="" style="width:80%;height:80%;object-fit:contain"></div>
+          <img src="assets/harold-parisot.jpg" alt="Harold Parisot, Président">
+          <div class="president-tag">
+            <div class="president-name">Harold Parisot</div>
+            <div class="president-role" data-fr="Président &amp; Fondateur" data-en="President &amp; Founder">Président &amp; Fondateur</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= SECTORS ============= -->
+<section class="sectors">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow" data-fr="Représentés au Club" data-en="Represented at the Club">Représentés au Club</div>
+      <h2 class="sec-title" data-fr="Tous les <em>secteurs d'activités</em>" data-en="Every <em>industry sector</em>">Tous les <em>secteurs d'activités</em></h2>
+      <p class="sec-sub" data-fr="Business angels, entrepreneurs, investisseurs, politiques, diplomates, journalistes, dirigeants, sportifs professionnels, chefs cuisiniers — un écosystème complet." data-en="Business angels, entrepreneurs, investors, politicians, diplomats, journalists, executives, professional athletes, chefs — a complete ecosystem.">
+        Business angels, entrepreneurs, investisseurs, politiques, diplomates, journalistes, dirigeants, sportifs professionnels, chefs cuisiniers — un écosystème complet.
+      </p>
+    </div>
+  </div>
+
+  <div class="sectors-marquee">
+    <div class="marq-row">
+      <div class="marq-card">Start-up</div>
+      <div class="marq-card">Fonds d'investissement</div>
+      <div class="marq-card">Agroalimentaire</div>
+      <div class="marq-card">Laboratoires pharmaceutiques</div>
+      <div class="marq-card">Aéronautique</div>
+      <div class="marq-card">Univers du luxe</div>
+      <div class="marq-card">Industrie lourde</div>
+      <div class="marq-card">Tourisme</div>
+      <!-- duplicate -->
+      <div class="marq-card">Start-up</div>
+      <div class="marq-card">Fonds d'investissement</div>
+      <div class="marq-card">Agroalimentaire</div>
+      <div class="marq-card">Laboratoires pharmaceutiques</div>
+      <div class="marq-card">Aéronautique</div>
+      <div class="marq-card">Univers du luxe</div>
+      <div class="marq-card">Industrie lourde</div>
+      <div class="marq-card">Tourisme</div>
+    </div>
+    <div class="marq-row rev">
+      <div class="marq-card">Services</div>
+      <div class="marq-card">Éducation</div>
+      <div class="marq-card">Hôtellerie</div>
+      <div class="marq-card">Diplomatie</div>
+      <div class="marq-card">Sport professionnel</div>
+      <div class="marq-card">Gastronomie</div>
+      <div class="marq-card">Médias</div>
+      <div class="marq-card">Immobilier</div>
+      <!-- duplicate -->
+      <div class="marq-card">Services</div>
+      <div class="marq-card">Éducation</div>
+      <div class="marq-card">Hôtellerie</div>
+      <div class="marq-card">Diplomatie</div>
+      <div class="marq-card">Sport professionnel</div>
+      <div class="marq-card">Gastronomie</div>
+      <div class="marq-card">Médias</div>
+      <div class="marq-card">Immobilier</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= GUESTS OF HONOR ============= -->
+<section class="guests">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow" data-fr="Invités d'Honneur" data-en="Guests of Honor">Invités d'Honneur</div>
+      <h2 class="sec-title" data-fr="Des <em>personnalités</em> exceptionnelles" data-en="Exceptional <em>personalities</em>">Des <em>personnalités</em> exceptionnelles</h2>
+      <p class="sec-sub" data-fr="Chaque mois, le Club accueille à sa table des invités prestigieux : Présidents de la République, dirigeants du CAC40, sportifs de haut niveau, médecins et personnalités politiques." data-en="Every month, the Club welcomes prestigious guests: Presidents of the Republic, CAC40 executives, top-level athletes, doctors and political figures.">
+        Chaque mois, le Club accueille à sa table des invités prestigieux : Présidents de la République, dirigeants du CAC40, sportifs de haut niveau, médecins et personnalités politiques.
+      </p>
+    </div>
+
+    <div class="guest-grid">
+      <figure class="guest-card guest-tall reveal">
+        <img src="assets/photos/sarkozy.jpg" alt="Invité d'honneur — Personnalité politique">
+        <figcaption>
+          <span class="g-tag" data-fr="Politique" data-en="Politics">Politique</span>
+          <span class="g-title" data-fr="Ancien Président de la République" data-en="Former President of the Republic">Ancien Président de la République</span>
+        </figcaption>
+      </figure>
+      <figure class="guest-card reveal delay-1">
+        <img src="assets/photos/macron.jpg" alt="Diplomatie franco-chinoise">
+        <figcaption>
+          <span class="g-tag" data-fr="Diplomatie" data-en="Diplomacy">Diplomatie</span>
+          <span class="g-title" data-fr="Échanges franco-chinois au plus haut niveau" data-en="Top-level Franco-Chinese exchanges">Échanges franco-chinois au plus haut niveau</span>
+        </figcaption>
+      </figure>
+      <figure class="guest-card reveal delay-2">
+        <img src="assets/photos/parker-mic.jpg" alt="Sportif professionnel">
+        <figcaption>
+          <span class="g-tag" data-fr="Sport" data-en="Sport">Sport</span>
+          <span class="g-title" data-fr="Champion NBA &amp; entrepreneur" data-en="NBA Champion &amp; entrepreneur">Champion NBA &amp; entrepreneur</span>
+        </figcaption>
+      </figure>
+      <figure class="guest-card reveal delay-3">
+        <img src="assets/photos/raoult.jpg" alt="Médecin et personnalité">
+        <figcaption>
+          <span class="g-tag" data-fr="Sciences" data-en="Sciences">Sciences</span>
+          <span class="g-title" data-fr="Professeur &amp; figure médicale" data-en="Professor &amp; medical figure">Professeur &amp; figure médicale</span>
+        </figcaption>
+      </figure>
+      <figure class="guest-card guest-wide reveal">
+        <img src="assets/photos/bpi.jpg" alt="Dirigeant économique">
+        <figcaption>
+          <span class="g-tag" data-fr="Économie" data-en="Economy">Économie</span>
+          <span class="g-title" data-fr="Dirigeant d'un grand acteur du financement français" data-en="Leader of a major French financing institution">Dirigeant d'un grand acteur du financement français</span>
+        </figcaption>
+      </figure>
+      <figure class="guest-card reveal delay-1">
+        <img src="assets/photos/podium-red.jpg" alt="Conférence">
+        <figcaption>
+          <span class="g-tag" data-fr="Conférence" data-en="Conference">Conférence</span>
+          <span class="g-title" data-fr="Keynotes &amp; témoignages exclusifs" data-en="Keynotes &amp; exclusive testimonies">Keynotes &amp; témoignages exclusifs</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============= EVENTS / TIMELINE ============= -->
+<section class="events">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow" data-fr="Programme 2026" data-en="2026 Program">Programme 2026</div>
+      <h2 class="sec-title" data-fr="15 rendez-vous d'<em>exception</em>" data-en="15 exclusive <em>gatherings</em>">15 rendez-vous d'<em>exception</em></h2>
+      <p class="sec-sub" data-fr="Plus d'une douzaine de fois par an, les membres se réunissent à Paris dans les plus belles adresses." data-en="More than a dozen times a year, members gather in Paris at the finest venues.">
+        Plus d'une douzaine de fois par an, les membres se réunissent à Paris dans les plus belles adresses.
+      </p>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item reveal"><div class="tl-month" data-fr="Janvier" data-en="January">Janvier</div><div class="tl-title" data-fr="Déjeuner des Vœux" data-en="New Year Lunch">Déjeuner des Vœux</div><div class="tl-place">InterContinental Paris</div></div>
+      <div class="tl-item reveal delay-1"><div class="tl-month" data-fr="Février" data-en="February">Février</div><div class="tl-title" data-fr="Cocktail Licornes" data-en="Unicorns Cocktail">Cocktail Licornes</div><div class="tl-place">Hôtel de Crillon</div></div>
+      <div class="tl-item reveal delay-2"><div class="tl-month" data-fr="Mars" data-en="March">Mars</div><div class="tl-title" data-fr="Déjeuner CAC40" data-en="CAC40 Lunch">Déjeuner CAC40</div><div class="tl-place">Le Bristol</div></div>
+      <div class="tl-item reveal delay-3"><div class="tl-month" data-fr="Avril" data-en="April">Avril</div><div class="tl-title" data-fr="Soirée Diplomatique" data-en="Diplomatic Evening">Soirée Diplomatique</div><div class="tl-place">Quai d'Orsay</div></div>
+      <div class="tl-item reveal"><div class="tl-month" data-fr="Mai" data-en="May">Mai</div><div class="tl-title" data-fr="Cocktail Luxe" data-en="Luxury Cocktail">Cocktail Luxe</div><div class="tl-place">Place Vendôme</div></div>
+      <div class="tl-item reveal delay-1"><div class="tl-month" data-fr="Juin" data-en="June">Juin</div><div class="tl-title" data-fr="Gala d'Été" data-en="Summer Gala">Gala d'Été</div><div class="tl-place">Pavillon Ledoyen</div></div>
+      <div class="tl-item reveal delay-2"><div class="tl-month" data-fr="Septembre" data-en="September">Septembre</div><div class="tl-title" data-fr="Rentrée des Membres" data-en="Members Return">Rentrée des Membres</div><div class="tl-place">George V</div></div>
+      <div class="tl-item reveal delay-3"><div class="tl-month" data-fr="Décembre" data-en="December">Décembre</div><div class="tl-title" data-fr="Gala de Fin d'Année" data-en="Year-end Gala">Gala de Fin d'Année</div><div class="tl-place">Hôtel Plaza Athénée</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= GALLERY ============= -->
+<section class="gallery" id="galerie">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow" data-fr="Photos &amp; Vidéos" data-en="Photos &amp; Videos">Photos &amp; Vidéos</div>
+      <h2 class="sec-title" data-fr="Les <em>moments</em> du Club" data-en="The <em>moments</em> of the Club">Les <em>moments</em> du Club</h2>
+      <p class="sec-sub" data-fr="Retour en images sur les déjeuners, cocktails et événements organisés tout au long de l'année." data-en="A photographic journey through the lunches, cocktails and events organized throughout the year.">
+        Retour en images sur les déjeuners, cocktails et événements organisés tout au long de l'année.
+      </p>
+    </div>
+
+    <div class="gallery-grid reveal">
+      <div class="g-item g1">
+        <img src="assets/photos/ballroom-france-chine.jpg" alt="Grand déjeuner d'affaires">
+        <div class="g-caption">Grand Déjeuner d'affaires — Hôtel particulier, Paris 8e</div>
+      </div>
+      <div class="g-item g2">
+        <img src="assets/photos/couple-table.jpg" alt="Cocktail">
+        <div class="g-caption">Cocktail des Membres</div>
+      </div>
+      <div class="g-item g3">
+        <img src="assets/photos/sponsor-three.jpg" alt="Mur sponsor">
+        <div class="g-caption">140+ sociétés membres réunies</div>
+      </div>
+      <div class="g-item g4">
+        <img src="assets/photos/raoult.jpg" alt="Personnalités">
+        <div class="g-caption">Invités d'Honneur</div>
+      </div>
+      <div class="g-item g5">
+        <img src="assets/photos/two-men-table.jpg" alt="Déjeuner d'affaires">
+        <div class="g-caption">Déjeuner d'Affaires</div>
+      </div>
+      <div class="g-item g6">
+        <img src="assets/photos/orateur.jpg" alt="Salon doré">
+        <div class="g-caption">Salons Privés — Paris 8e</div>
+      </div>
+    </div>
+
+    <div class="video-card reveal">
+      <img src="assets/photos/grand-salon.jpg" alt="Vidéo Club">
+      <div class="video-play">
+        <div class="play-btn">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
+      <div class="video-info">
+        <div class="meta" data-fr="Vidéo · 02:34" data-en="Video · 02:34">Vidéo · 02:34</div>
+        <h3 data-fr="Le Chinese Business Club en images" data-en="The Chinese Business Club in motion">Le Chinese Business Club en images</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= MEMBERS ============= -->
+<section class="members" id="membres">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow" data-fr="Nos Membres" data-en="Our Members">Nos Membres</div>
+      <h2 class="sec-title" data-fr="Un cercle <em>d'exception</em>" data-en="A circle of <em>excellence</em>">Un cercle <em>d'exception</em></h2>
+      <p class="sec-sub" data-fr="Plus de 140 sociétés membres : business angels, dirigeants, investisseurs, fondateurs. Tous secteurs représentés." data-en="Over 140 member companies: business angels, executives, investors, founders. All sectors represented.">
+        Plus de 140 sociétés membres : business angels, dirigeants, investisseurs, fondateurs. Tous secteurs représentés.
+      </p>
+    </div>
+
+    <div class="members-grid">
+      <div class="mem-card reveal">
+        <div class="mem-photo">AL</div>
+        <div class="mem-name">Antoine Laurent</div>
+        <div class="mem-role" data-fr="CEO &amp; Co-fondateur" data-en="CEO &amp; Co-founder">CEO &amp; Co-fondateur</div>
+        <span class="mem-sector">Start-up · FinTech</span>
+        <p class="mem-bio" data-fr="Licorne française, expansion européenne en cours." data-en="French unicorn, ongoing European expansion.">Licorne française, expansion européenne en cours.</p>
+      </div>
+      <div class="mem-card reveal delay-1">
+        <div class="mem-photo">MC</div>
+        <div class="mem-name">Marie Chevalier</div>
+        <div class="mem-role" data-fr="Directrice Générale" data-en="Managing Director">Directrice Générale</div>
+        <span class="mem-sector">Univers du luxe</span>
+        <p class="mem-bio" data-fr="Maison familiale, présence internationale." data-en="Family maison, international footprint.">Maison familiale, présence internationale.</p>
+      </div>
+      <div class="mem-card reveal delay-2">
+        <div class="mem-photo">PD</div>
+        <div class="mem-name">Pierre Dubois</div>
+        <div class="mem-role" data-fr="Managing Partner" data-en="Managing Partner">Managing Partner</div>
+        <span class="mem-sector">Fonds d'investissement</span>
+        <p class="mem-bio" data-fr="Investisseur en série A &amp; B, focus tech." data-en="Series A &amp; B investor, tech focus.">Investisseur en série A &amp; B, focus tech.</p>
+      </div>
+      <div class="mem-card reveal delay-3">
+        <div class="mem-photo">SR</div>
+        <div class="mem-name">Sophie Renard</div>
+        <div class="mem-role" data-fr="Présidente" data-en="President">Présidente</div>
+        <span class="mem-sector">Agroalimentaire</span>
+        <p class="mem-bio" data-fr="ETI familiale, 800 collaborateurs." data-en="Family-owned mid-cap, 800 employees.">ETI familiale, 800 collaborateurs.</p>
+      </div>
+      <div class="mem-card reveal">
+        <div class="mem-photo">JM</div>
+        <div class="mem-name">Julien Moreau</div>
+        <div class="mem-role" data-fr="Fondateur" data-en="Founder">Fondateur</div>
+        <span class="mem-sector">Aéronautique</span>
+        <p class="mem-bio" data-fr="Sous-traitant Tier 1, partenariats Airbus." data-en="Tier 1 supplier, Airbus partnerships.">Sous-traitant Tier 1, partenariats Airbus.</p>
+      </div>
+      <div class="mem-card reveal delay-1">
+        <div class="mem-photo">CV</div>
+        <div class="mem-name">Camille Vidal</div>
+        <div class="mem-role" data-fr="CEO" data-en="CEO">CEO</div>
+        <span class="mem-sector">Laboratoires</span>
+        <p class="mem-bio" data-fr="Biotech, levée série C récente." data-en="Biotech, recent Series C round.">Biotech, levée série C récente.</p>
+      </div>
+      <div class="mem-card reveal delay-2">
+        <div class="mem-photo">TB</div>
+        <div class="mem-name">Thomas Bernard</div>
+        <div class="mem-role" data-fr="Directeur" data-en="Director">Directeur</div>
+        <span class="mem-sector">Hôtellerie</span>
+        <p class="mem-bio" data-fr="Groupe 4 étoiles, 12 établissements." data-en="4-star group, 12 properties.">Groupe 4 étoiles, 12 établissements.</p>
+      </div>
+      <div class="mem-card reveal delay-3">
+        <div class="mem-photo">EL</div>
+        <div class="mem-name">Élodie Leroy</div>
+        <div class="mem-role" data-fr="Cheffe étoilée" data-en="Michelin Chef">Cheffe étoilée</div>
+        <span class="mem-sector">Gastronomie</span>
+        <p class="mem-bio" data-fr="Deux étoiles Michelin, restaurant Paris 8e." data-en="Two Michelin stars, Paris 8th arr.">Deux étoiles Michelin, restaurant Paris 8e.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:64px" class="reveal">
+      <a href="#contact" class="btn btn-primary" style="background:var(--navy)">
+        <span data-fr="Devenir Membre" data-en="Become a Member">Devenir Membre</span>
+        <span class="arr">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============= CONTACT ============= -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow" data-fr="Nous contacter" data-en="Contact us">Nous contacter</div>
+      <h2 class="sec-title" data-fr="Rejoignez le <em>Club</em>" data-en="Join the <em>Club</em>">Rejoignez le <em>Club</em></h2>
+      <p class="sec-sub" data-fr="Une question, une demande d'adhésion, un partenariat ? Notre équipe vous répond sous 48h." data-en="A question, an application, a partnership? Our team replies within 48 hours.">
+        Une question, une demande d'adhésion, un partenariat ? Notre équipe vous répond sous 48h.
+      </p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="ci-row">
+          <div class="ci-ico">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+          </div>
+          <div>
+            <div class="ci-label" data-fr="Adresse" data-en="Address">Adresse</div>
+            <div class="ci-value">29 rue Bassano<br><strong>75008 Paris</strong></div>
+          </div>
+        </div>
+        <div class="ci-row">
+          <div class="ci-ico">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5z"/></svg>
+          </div>
+          <div>
+            <div class="ci-label" data-fr="Email" data-en="Email">Email</div>
+            <div class="ci-value">contact@chinesebusinessclub.fr</div>
+          </div>
+        </div>
+        <div class="ci-row">
+          <div class="ci-ico">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-3 0-9 1.5-9 5v1h18v-1c0-3.5-6-5-9-5z"/></svg>
+          </div>
+          <div>
+            <div class="ci-label" data-fr="Président" data-en="President">Président</div>
+            <div class="ci-value"><strong>Harold Parisot</strong><br><span style="opacity:.6;font-size:14px" data-fr="Fondateur du Club" data-en="Founder of the Club">Fondateur du Club</span></div>
+          </div>
+        </div>
+        <div class="ci-row">
+          <div class="ci-ico">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 14.5 9 22 9 16 13.5 18.5 21 12 16.5 5.5 21 8 13.5 2 9 9.5 9z"/></svg>
+          </div>
+          <div>
+            <div class="ci-label" data-fr="Récompense" data-en="Recognition">Récompense</div>
+            <div class="ci-value" data-fr="<strong>Meilleur réseau d'affaires</strong><br><span style='opacity:.6;font-size:14px'>de France</span>" data-en="<strong>Best business network</strong><br><span style='opacity:.6;font-size:14px'>in France</span>"><strong>Meilleur réseau d'affaires</strong><br><span style="opacity:.6;font-size:14px">de France</span></div>
+          </div>
+        </div>
+      </div>
+
+      <form class="contact-form reveal delay-2" onsubmit="event.preventDefault(); alert('Merci, votre demande a été envoyée.');">
+        <div class="form-row">
+          <div class="field">
+            <input type="text" id="fn" placeholder=" " required>
+            <label for="fn" data-fr="Prénom" data-en="First name">Prénom</label>
+          </div>
+          <div class="field">
+            <input type="text" id="ln" placeholder=" " required>
+            <label for="ln" data-fr="Nom" data-en="Last name">Nom</label>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <input type="email" id="em" placeholder=" " required>
+            <label for="em" data-fr="Email" data-en="Email">Email</label>
+          </div>
+          <div class="field">
+            <input type="text" id="co" placeholder=" ">
+            <label for="co" data-fr="Société" data-en="Company">Société</label>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:16px">
+          <select id="su" required>
+            <option value="" disabled selected hidden></option>
+            <option value="adhesion">Demande d'adhésion</option>
+            <option value="partenariat">Partenariat</option>
+            <option value="presse">Presse</option>
+            <option value="autre">Autre</option>
+          </select>
+          <label for="su" data-fr="Objet" data-en="Subject">Objet</label>
+        </div>
+        <div class="field" style="margin-bottom:16px">
+          <textarea id="msg" placeholder=" " required></textarea>
+          <label for="msg" data-fr="Message" data-en="Message">Message</label>
+        </div>
+        <button type="submit" class="form-submit" data-fr="Envoyer ma demande" data-en="Send my request">Envoyer ma demande</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============= FOOTER ============= -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <div class="foot-brand">
+          <div class="brand-logo">
+            <svg viewBox="0 0 24 24"><path d="M12 2 L14.5 9 L22 9 L16 13.5 L18.5 21 L12 16.5 L5.5 21 L8 13.5 L2 9 L9.5 9 Z" fill="white"/></svg>
+          </div>
+          <div class="brand-text">
+            <div class="brand-name" style="color:#fff">Chinese Business Club</div>
+            <div class="brand-tag">Paris · Depuis 2012</div>
+          </div>
+        </div>
+        <p data-fr="Le 1er Club d'affaires de France. 140+ sociétés membres, 15 événements par an à Paris." data-en="The N°1 business club in France. 140+ member companies, 15 events per year in Paris.">
+          Le 1<sup>er</sup> Club d'affaires de France. 140+ sociétés membres, 15 événements par an à Paris.
+        </p>
+      </div>
+      <div class="foot-col">
+        <h4 data-fr="Navigation" data-en="Navigation">Navigation</h4>
+        <ul>
+          <li><a href="#accueil" data-fr="Accueil" data-en="Home">Accueil</a></li>
+          <li><a href="#galerie" data-fr="Photos &amp; Vidéos" data-en="Photos &amp; Videos">Photos &amp; Vidéos</a></li>
+          <li><a href="#membres" data-fr="Nos Membres" data-en="Our Members">Nos Membres</a></li>
+          <li><a href="#contact" data-fr="Contact" data-en="Contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4 data-fr="Le Club" data-en="The Club">Le Club</h4>
+        <ul>
+          <li><a href="#about" data-fr="À propos" data-en="About">À propos</a></li>
+          <li><a href="#about" data-fr="Le Président" data-en="The President">Le Président</a></li>
+          <li><a href="#" data-fr="Programme 2026" data-en="2026 Program">Programme 2026</a></li>
+          <li><a href="#" data-fr="Adhérer" data-en="Join">Adhérer</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4 data-fr="Coordonnées" data-en="Get in touch">Coordonnées</h4>
+        <p>29 rue Bassano<br>75008 Paris<br><br>contact@chinesebusinessclub.fr</p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div>Copyright © 2026 Chinese Business Club</div>
+      <div class="links">
+        <a href="#" data-fr="Mentions légales" data-en="Legal">Mentions légales</a>
+        <a href="#" data-fr="Confidentialité" data-en="Privacy">Confidentialité</a>
+        <a href="#" data-fr="Accessibilité" data-en="Accessibility">Accessibilité</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============= A11Y BUTTON ============= -->
+<button class="a11y-btn" aria-label="Accessibilité" title="Réglages d'accessibilité">
+  <svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm-7 5h14v2l-5 1v3l2 7h-2.5l-1.5-6-1.5 6H8l2-7V10L5 9V7z"/></svg>
+</button>
+
+<script>
+  // ============ PRELOADER ============
+  window.addEventListener('load', () => {
+    setTimeout(() => document.getElementById('preloader').classList.add('hidden'), 700);
+  });
+
+  // ============ TOPBAR SCROLL STATE ============
+  const topbar = document.getElementById('topbar');
+  const onScroll = () => {
+    if (window.scrollY > 60) topbar.classList.add('scrolled');
+    else topbar.classList.remove('scrolled');
+
+    // active nav link
+    const sections = ['accueil','galerie','membres','contact'];
+    let current = 'accueil';
+    for (const id of sections){
+      const el = document.getElementById(id);
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      if (r.top <= 140) current = id;
+    }
+    document.querySelectorAll('.nav-a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  };
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // ============ MOBILE MENU ============
+  const menubtn = document.getElementById('menubtn');
+  const navlinks = document.getElementById('navlinks');
+  menubtn.addEventListener('click', () => navlinks.classList.toggle('open'));
+  navlinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navlinks.classList.remove('open')));
+
+  // ============ LANGUAGE TOGGLE ============
+  const langBtns = document.querySelectorAll('.lang button');
+  langBtns.forEach(btn => btn.addEventListener('click', () => {
+    const lang = btn.dataset.lang;
+    langBtns.forEach(b => b.classList.toggle('on', b === btn));
+    document.body.classList.add('lang-swapping');
+    setTimeout(() => {
+      document.querySelectorAll('[data-fr],[data-en]').forEach(el => {
+        const txt = el.dataset[lang];
+        if (txt !== undefined) el.innerHTML = txt;
+      });
+      document.documentElement.lang = lang;
+      document.body.classList.remove('lang-swapping');
+      document.body.classList.toggle('lang-en', lang === 'en');
+      document.body.classList.toggle('lang-fr', lang === 'fr');
+    }, 200);
+  }));
+
+  // ============ COUNTER ANIMATION ============
+  const counters = document.querySelectorAll('.count');
+  const animateCount = (el) => {
+    const target = +el.dataset.target;
+    const duration = 1800;
+    const start = performance.now();
+    const tick = (now) => {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = Math.floor(target * eased);
+      el.textContent = val.toLocaleString('fr-FR').replace(/\u202f/g,' ');
+      if (t < 1) requestAnimationFrame(tick);
+      else el.textContent = target.toLocaleString('fr-FR').replace(/\u202f/g,' ');
+    };
+    requestAnimationFrame(tick);
+  };
+
+  // ============ INTERSECTION OBSERVER (reveals + counters) ============
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add('in');
+        const c = entry.target.querySelector('.count');
+        if (c && !c.dataset.done){ animateCount(c); c.dataset.done='1'; }
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold:.15, rootMargin:'0px 0px -50px'});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
