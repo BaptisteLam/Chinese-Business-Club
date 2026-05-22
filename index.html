@@ -43,13 +43,13 @@
   }
   .preloader.hidden{opacity:0;visibility:hidden}
   .pre-logo{
-    width:120px;height:120px;
-    animation:preSpin 1.4s cubic-bezier(.7,0,.3,1) infinite alternate;
+    width:200px;height:200px;
+    animation:preSpin 2s cubic-bezier(.7,0,.3,1) infinite alternate;
+    filter:drop-shadow(0 0 24px rgba(200,16,46,.6));
   }
-  .pre-logo path,.pre-logo polygon{fill:var(--red)}
   @keyframes preSpin{
-    from{transform:scale(.94) rotate(-6deg);opacity:.7}
-    to{transform:scale(1) rotate(6deg);opacity:1}
+    from{transform:scale(.9) rotate(-8deg);opacity:.75}
+    to{transform:scale(1.05) rotate(8deg);opacity:1}
   }
 
   /* ============= TOP BAR ============= */
@@ -152,7 +152,7 @@
   }
   .hero-bg{
     position:absolute;inset:0;
-    background-image:url('project/assets/photos/grand-salon.jpg');
+    background-image:url('project/assets/ballroom.jpg');
     background-size:cover;background-position:center;
     filter:brightness(.75) saturate(1);
     transform:scale(1.1);
@@ -887,11 +887,7 @@
 
 <!-- ============= PRELOADER ============= -->
 <div class="preloader" id="preloader">
-  <svg class="pre-logo" viewBox="0 0 1050.17 1050.21">
-    <polygon points="141.34 338.67 125.79 386.34 75.65 386.29 116.18 415.81 100.63 463.48 141.23 434.05 181.76 463.57 166.32 415.86 206.92 386.44 156.78 386.38 141.34 338.67"></polygon>
-    <polygon points="913.92 338.67 929.47 386.34 979.61 386.29 939.07 415.81 954.62 463.48 914.02 434.05 873.49 463.57 888.93 415.86 848.33 386.44 898.48 386.38 913.92 338.67"></polygon>
-    <circle cx="525" cy="525" r="450" fill="none" stroke="#c8102e" stroke-width="40"/>
-  </svg>
+  <img src="project/assets/logo.svg" class="pre-logo" alt="Chinese Business Club">
 </div>
 
 <!-- ============= TOPBAR ============= -->
